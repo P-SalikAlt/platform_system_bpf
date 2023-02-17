@@ -107,7 +107,7 @@ class BpfLoadTest : public TestWithParam<std::string> {
         // Earlier kernels lack BPF_BTF_LOAD support
         if (!isAtLeastKernelVersion(4, 19, 0)) GTEST_SKIP() << "pre-4.19 kernel does not support BTF";
 
-        const bool haveBtf = GetParam().find("Btf") != std::string::npos;
+        const bool haveBtf = GetParam().find("btf") != std::string::npos;
 
         std::string str;
         EXPECT_EQ(android::base::ReadFileToString(mTpMapPath, &str), haveBtf);
@@ -121,7 +121,8 @@ class BpfLoadTest : public TestWithParam<std::string> {
 };
 
 INSTANTIATE_TEST_SUITE_P(BpfLoadTests, BpfLoadTest,
-                         ::testing::Values("bpfLoadTpProg", "bpfLoadTpProgBtf"));
+                         ::testing::Values("bpf_load_tp_prog",
+                                           "bpf_load_tp_prog_btf"));
 
 TEST_P(BpfLoadTest, bpfCheckMap) {
     checkMapNonZero();
